@@ -1,3 +1,4 @@
+using CompraProgramada.Api.Middlewares;
 using CompraProgramada.Infra.IoC;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,8 +18,21 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors(builder => builder
+    .AllowAnyOrigin()
+    .AllowAnyMethod()
+    .AllowAnyHeader());
+
 app.UseHttpsRedirection();
 
+app.UseRouting();
+
+app.UseMiddleware<ValidationExceptionMiddleware>();
+
+app.UseCors();
+
 app.MapControllers();
+
+app.Map("/", () => Results.Redirect("/swagger"));
 
 app.Run();
