@@ -1,4 +1,6 @@
-﻿namespace CompraProgramada.Domain.Entities.CestaAggregate
+﻿using CompraProgramada.Domain.Exceptions;
+
+namespace CompraProgramada.Domain.Entities.CestaAggregate
 {
     /// <summary>
     /// Item da cesta de recomendação. Vincula uma ação a um percentual.
@@ -19,9 +21,13 @@
 
         public CestaRecomendacaoItem(int cestaRecomendacaoId, int acaoId, decimal percentual)
         {
+            if (percentual <= 0)
+                throw new DomainException("Percentual deve ser maior que 0%.");
+
             CestaRecomendacaoId = cestaRecomendacaoId;
             AcaoId = acaoId;
             Percentual = percentual;
         }
     }
 }
+    

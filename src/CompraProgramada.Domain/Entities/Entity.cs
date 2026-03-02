@@ -6,7 +6,7 @@
 
         public DateTime DataCriacao { get; protected set; }
 
-        public DateTime? DataAtualizacao { get; private set; }
+        public DateTime? DataAtualizacao { get; set; }
 
         protected Entity()
         {
