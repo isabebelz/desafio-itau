@@ -1,4 +1,5 @@
-﻿using CompraProgramada.Domain.Interfaces.Repositories;
+﻿using CompraProgramada.Domain.Interfaces;
+using CompraProgramada.Domain.Interfaces.Repositories;
 using CompraProgramada.Infra.Data.Context;
 using CompraProgramada.Infra.Data.Interfaces.Repositories;
 using CompraProgramada.Infra.Data.Repositories;
@@ -42,6 +43,7 @@ namespace CompraProgramada.Infra.Data
             services.AddScoped<ICestaRecomendacaoRepository, CestaRecomendacaoRepository>();
             services.AddScoped<IOrdemCompraRepository, OrdemCompraRepository>();
             services.AddScoped<IContaMasterRepository, ContaMasterRepository>();
+            services.AddScoped<IParametroSistemaRepository, ParametroSistemaRepository>();
 
             return services;
         }
