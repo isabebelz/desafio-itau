@@ -1,5 +1,5 @@
 ﻿using CompraProgramada.Domain.Entities;
-using CompraProgramada.Domain.Interfaces;
+using CompraProgramada.Domain.Interfaces.Repositories;
 using MediatR;
 
 namespace CompraProgramada.Application.Features.Acoes.Commands.CadastrarAcao

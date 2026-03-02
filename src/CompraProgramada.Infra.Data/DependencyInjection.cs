@@ -1,5 +1,7 @@
 ﻿using CompraProgramada.Domain.Interfaces;
+using CompraProgramada.Domain.Interfaces.Repositories;
 using CompraProgramada.Infra.Data.Context;
+using CompraProgramada.Infra.Data.Interfaces.Repositories;
 using CompraProgramada.Infra.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -37,6 +39,11 @@ namespace CompraProgramada.Infra.Data
         private static IServiceCollection AddRepositories(this IServiceCollection services)
         {
             services.AddScoped<IAcaoRepository, AcaoRepository>();
+            services.AddScoped<IClienteRepository, ClienteRepository>();
+            services.AddScoped<ICestaRecomendacaoRepository, CestaRecomendacaoRepository>();
+            services.AddScoped<IOrdemCompraRepository, OrdemCompraRepository>();
+            services.AddScoped<IContaMasterRepository, ContaMasterRepository>();
+            services.AddScoped<IParametroSistemaRepository, ParametroSistemaRepository>();
 
             return services;
         }

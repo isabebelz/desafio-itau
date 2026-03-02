@@ -4,6 +4,7 @@ using CompraProgramada.Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CompraProgramada.Infra.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260301222242_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -267,7 +270,7 @@ namespace CompraProgramada.Infra.Data.Migrations
                     b.ToTable("T_CUSTODIA_FILHOTE", (string)null);
                 });
 
-            modelBuilder.Entity("CompraProgramada.Domain.Entities.ContaMasterAggregate.ContaMaster", b =>
+            modelBuilder.Entity("CompraProgramada.Domain.Entities.ContaAggregate.ContaMaster", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -295,7 +298,7 @@ namespace CompraProgramada.Infra.Data.Migrations
                     b.ToTable("T_CONTA_MASTER", (string)null);
                 });
 
-            modelBuilder.Entity("CompraProgramada.Domain.Entities.ContaMasterAggregate.CustodiaMaster", b =>
+            modelBuilder.Entity("CompraProgramada.Domain.Entities.ContaAggregate.CustodiaMaster", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -339,7 +342,7 @@ namespace CompraProgramada.Infra.Data.Migrations
                     b.ToTable("T_CUSTODIA_MASTER", (string)null);
                 });
 
-            modelBuilder.Entity("CompraProgramada.Domain.Entities.OrdemCompraAggregate.Distribuicao", b =>
+            modelBuilder.Entity("CompraProgramada.Domain.Entities.Distribuicao", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -484,49 +487,6 @@ namespace CompraProgramada.Infra.Data.Migrations
                     b.ToTable("T_ORDEM_COMPRA_ITEM", (string)null);
                 });
 
-            modelBuilder.Entity("CompraProgramada.Domain.Entities.ParametroSistema", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("ID");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Chave")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("CHAVE");
-
-                    b.Property<DateTime?>("DataAtualizacao")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("DATA_ATUALIZACAO");
-
-                    b.Property<DateTime>("DataCriacao")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("DATA_CRIACAO");
-
-                    b.Property<string>("Descricao")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("varchar(500)")
-                        .HasColumnName("DESCRICAO");
-
-                    b.Property<string>("Valor")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)")
-                        .HasColumnName("VALOR");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Chave")
-                        .IsUnique();
-
-                    b.ToTable("T_PARAMETRO_SISTEMA", (string)null);
-                });
-
             modelBuilder.Entity("CompraProgramada.Domain.Entities.CestaAggregate.CestaRecomendacaoItem", b =>
                 {
                     b.HasOne("CompraProgramada.Domain.Entities.Acao", "Acao")
@@ -576,7 +536,7 @@ namespace CompraProgramada.Infra.Data.Migrations
                     b.Navigation("ContaGrafica");
                 });
 
-            modelBuilder.Entity("CompraProgramada.Domain.Entities.ContaMasterAggregate.CustodiaMaster", b =>
+            modelBuilder.Entity("CompraProgramada.Domain.Entities.ContaAggregate.CustodiaMaster", b =>
                 {
                     b.HasOne("CompraProgramada.Domain.Entities.Acao", "Acao")
                         .WithMany()
@@ -584,7 +544,7 @@ namespace CompraProgramada.Infra.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("CompraProgramada.Domain.Entities.ContaMasterAggregate.ContaMaster", "ContaMaster")
+                    b.HasOne("CompraProgramada.Domain.Entities.ContaAggregate.ContaMaster", "ContaMaster")
                         .WithMany("Custodias")
                         .HasForeignKey("ContaMasterId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -595,7 +555,7 @@ namespace CompraProgramada.Infra.Data.Migrations
                     b.Navigation("ContaMaster");
                 });
 
-            modelBuilder.Entity("CompraProgramada.Domain.Entities.OrdemCompraAggregate.Distribuicao", b =>
+            modelBuilder.Entity("CompraProgramada.Domain.Entities.Distribuicao", b =>
                 {
                     b.HasOne("CompraProgramada.Domain.Entities.Acao", "Acao")
                         .WithMany()
@@ -656,7 +616,7 @@ namespace CompraProgramada.Infra.Data.Migrations
                     b.Navigation("Custodias");
                 });
 
-            modelBuilder.Entity("CompraProgramada.Domain.Entities.ContaMasterAggregate.ContaMaster", b =>
+            modelBuilder.Entity("CompraProgramada.Domain.Entities.ContaAggregate.ContaMaster", b =>
                 {
                     b.Navigation("Custodias");
                 });
