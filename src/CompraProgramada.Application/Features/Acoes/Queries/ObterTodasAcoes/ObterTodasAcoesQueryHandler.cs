@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using CompraProgramada.Domain.DTOs.Acoes;
-using CompraProgramada.Domain.Interfaces;
+using CompraProgramada.Domain.Interfaces.Repositories;
 using MediatR;
 
 namespace CompraProgramada.Application.Features.Acoes.Queries.ObterTodasAcoes

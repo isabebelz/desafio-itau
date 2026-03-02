@@ -1,5 +1,5 @@
 ﻿using CompraProgramada.Domain.Entities;
-using CompraProgramada.Domain.Interfaces;
+using CompraProgramada.Domain.Interfaces.Repositories;
 using CompraProgramada.Infra.Data.Context;
 using Dapper;
 using Microsoft.EntityFrameworkCore;
@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using MySql.Data.MySqlClient;
 using System.Data;
 
-namespace CompraProgramada.Infra.Data.Repositories
+namespace CompraProgramada.Infra.Data.Interfaces.Repositories
 {
     public class AcaoRepository : IAcaoRepository
     {
@@ -20,6 +20,7 @@ namespace CompraProgramada.Infra.Data.Repositories
             _connectionString = configuration.GetConnectionString("DefaultConnection") 
                 ?? throw new ArgumentNullException(nameof(configuration), "The Connection String 'DefaultConnection' was not found or is empty in appsettings.json."); ;
         }
+        private IDbConnection CreateConnection() => new MySqlConnection(_connectionString);
 
         public async Task AdicionarAsync(Acao acao)
         {
@@ -33,11 +34,9 @@ namespace CompraProgramada.Infra.Data.Repositories
             return Task.CompletedTask;
         }
 
-        private IDbConnection DbConnection => new MySqlConnection(_connectionString);
-
         public async Task<Acao?> ObterPorIdAsync(int id)
         {
-            using var conn = DbConnection;
+            using var conn = CreateConnection();
             const string sql = @"
                         SELECT 
                             ID As Id,
@@ -52,7 +51,7 @@ namespace CompraProgramada.Infra.Data.Repositories
 
         public async Task<Acao?> ObterPorCodigoAsync(string codigo)
         {
-            using var conn = DbConnection;
+            using var conn = CreateConnection();
             const string sql = @"
                          SELECT 
                             ID As Id,
@@ -65,9 +64,14 @@ namespace CompraProgramada.Infra.Data.Repositories
             return await conn.QuerySingleOrDefaultAsync<Acao>(sql, new { Codigo = codigo });
         }
 
+        public async Task<IEnumerable<Acao>> ObterTodosAtivosAsync()
+        {
+            return await ObterTodasAsync(true);
+        }
+
         public async Task<IEnumerable<Acao>> ObterTodasAsync(bool? ativo)
         {
-            using var conn = DbConnection;
+            using var conn = CreateConnection();
 
             var sql = @"
                 SELECT 
