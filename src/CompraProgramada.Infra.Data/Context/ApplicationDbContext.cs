@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CompraProgramada.Infra.Data.Configurations;
+using Microsoft.EntityFrameworkCore;
 
 namespace CompraProgramada.Infra.Data.Context
 {

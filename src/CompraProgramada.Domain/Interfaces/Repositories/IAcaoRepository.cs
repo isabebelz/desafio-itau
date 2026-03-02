@@ -1,6 +1,6 @@
 ﻿using CompraProgramada.Domain.Entities;
 
-namespace CompraProgramada.Domain.Interfaces
+namespace CompraProgramada.Domain.Interfaces.Repositories
 {
     /// <summary>
     /// Contrato que define as operações de persistência para a entidade Acao.
@@ -13,5 +13,6 @@ namespace CompraProgramada.Domain.Interfaces
         Task<Acao?> ObterPorIdAsync(int id);
         Task<Acao?> ObterPorCodigoAsync(string codigo);
         Task<IEnumerable<Acao>> ObterTodasAsync(bool? ativo);
+        Task<IEnumerable<Acao>> ObterTodosAtivosAsync();
     }
 }
