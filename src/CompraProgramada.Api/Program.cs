@@ -1,4 +1,5 @@
 using CompraProgramada.Api.Middlewares;
+using CompraProgramada.Infra.Data.Seeds;
 using CompraProgramada.Infra.IoC;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
+
+await DatabaseSeed.SeedAsync(app.Services);
 
 if (app.Environment.IsDevelopment())
 {

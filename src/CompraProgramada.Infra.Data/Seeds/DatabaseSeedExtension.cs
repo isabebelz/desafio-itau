@@ -3,31 +3,51 @@ using CompraProgramada.Domain.Entities;
 using CompraProgramada.Domain.Entities.ContaMasterAggregate;
 using CompraProgramada.Domain.Interfaces;
 using CompraProgramada.Domain.Interfaces.Repositories;
+using Microsoft.Extensions.DependencyInjection;
+using Serilog;
 
-namespace CompraProgramada.Api.Extensions
+namespace CompraProgramada.Infra.Data.Seeds
 {
-    public static class DatabaseSeedExtension
+    public static class DatabaseSeed
     {
-        public static async Task SeedDatabaseAsync(this IServiceProvider services)
+        public static async Task SeedAsync(IServiceProvider services)
         {
             using var scope = services.CreateScope();
             var provider = scope.ServiceProvider;
 
+            Log.Information("Iniciando seed do banco de dados...");
+
             await SeedContaMasterAsync(provider);
             await SeedParametrosAsync(provider);
+
+            Log.Information("Seed do banco de dados finalizado.");
         }
 
+        /// <summary>
+        /// Garante que existe exatamente uma ContaMaster no sistema.
+        /// A ContaMaster é singleton de negócio: é a conta da corretora
+        /// que consolida as compras antes da distribuição para os clientes.
+        /// </summary>
         private static async Task SeedContaMasterAsync(IServiceProvider provider)
         {
             var repo = provider.GetRequiredService<IContaMasterRepository>();
             var contaMaster = await repo.ObterAsync();
 
-            if (contaMaster is null)
+            if (contaMaster is not null)
             {
-                await repo.AdicionarAsync(new ContaMaster("Conta Master - Itaú Corretora"));
+                Log.Information("Conta Master já existe (ID: {Id}).", contaMaster.Id);
+                return;
             }
+
+            contaMaster = new ContaMaster("Conta Master - Itaú Corretora");
+            await repo.AdicionarAsync(contaMaster);
+
+            Log.Information("Conta Master criada com sucesso (ID: {Id}).", contaMaster.Id);
         }
 
+        /// <summary>
+        /// Popula os parâmetros configuráveis do sistema com valores padrão.
+        /// </summary>
         private static async Task SeedParametrosAsync(IServiceProvider provider)
         {
             var repo = provider.GetRequiredService<IParametroSistemaRepository>();
