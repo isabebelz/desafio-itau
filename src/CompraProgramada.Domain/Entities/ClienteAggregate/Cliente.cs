@@ -9,9 +9,6 @@ namespace CompraProgramada.Domain.Entities.ClienteAggregate
     /// </summary>
     public class Cliente : Entity
     {
-        public const decimal VALOR_APORTE_MINIMO = 100.00m;
-        public const int PARCELAS_POR_MES = 3;
-
         public string Nome { get; private set; }
         public string CPF { get; private set; }
         public string Email { get; private set; }
@@ -39,8 +36,10 @@ namespace CompraProgramada.Domain.Entities.ClienteAggregate
             if (string.IsNullOrWhiteSpace(nome))
                 throw new DomainException("Nome é obrigatório.");
 
-            if (string.IsNullOrWhiteSpace(cpf) || cpf.Length != 11)
-                throw new DomainException("CPF deve conter 11 dígitos.");
+            var cpfNormalizado = NormalizarCpf(cpf);
+
+            if (!ValidaCPF(cpfNormalizado))
+                throw new DomainException("CPF inválido.");
 
             if (string.IsNullOrWhiteSpace(email))
                 throw new DomainException("Email é obrigatório.");
@@ -49,11 +48,55 @@ namespace CompraProgramada.Domain.Entities.ClienteAggregate
                 throw new DomainException($"Valor mínimo de aporte é R$ {valorAporteMinimo}.");
 
             Nome = nome;
-            CPF = cpf;
+            CPF = cpfNormalizado;
             Email = email;
             ValorAporteMensal = valorAporteMensal;
             Ativo = true;
             DataAdesao = DateTime.UtcNow;
+        }
+
+        public static bool ValidaCPF(string cpf)
+        {
+            if (string.IsNullOrWhiteSpace(cpf))
+                return false;
+
+            cpf = cpf.Trim().Replace(".", "").Replace("-", "");
+
+            if (cpf.Length != 11)
+                return false;
+
+            if (!cpf.All(char.IsDigit))
+                return false;
+
+            if (cpf.Distinct().Count() == 1)
+                return false;
+
+            var soma = 0;
+            for (int i = 0; i < 9; i++)
+                soma += (cpf[i] - '0') * (10 - i);
+
+            var resto = soma % 11;
+            var primeiroDigito = resto < 2 ? 0 : 11 - resto;
+
+            if ((cpf[9] - '0') != primeiroDigito)
+                return false;
+
+            soma = 0;
+            for (int i = 0; i < 10; i++)
+                soma += (cpf[i] - '0') * (11 - i);
+
+            resto = soma % 11;
+            var segundoDigito = resto < 2 ? 0 : 11 - resto;
+
+            if ((cpf[10] - '0') != segundoDigito)
+                return false;
+
+            return true;
+        }
+
+        private static string NormalizarCpf(string cpf)
+        {
+            return cpf.Trim().Replace(".", "").Replace("-", "");
         }
 
         /// <summary>
@@ -83,6 +126,16 @@ namespace CompraProgramada.Domain.Entities.ClienteAggregate
             DataAtualizacao = DateTime.UtcNow;
         }
 
+        public void Reativar()
+        {
+            if (Ativo)
+                throw new DomainException("Cliente já está ativo.");
+
+            Ativo = true;
+            DataSaida = null;
+            DataAtualizacao = DateTime.UtcNow;
+        }
+
         /// <summary>
         /// Alteração do valor mensal de aporte.
         /// O novo valor será usado a partir da próxima data de compra.
@@ -103,9 +156,9 @@ namespace CompraProgramada.Domain.Entities.ClienteAggregate
         /// Calcula o valor de 1/3 do aporte mensal (parcela por data de compra).
         /// O valor é dividido em 3 parcelas: dias 5, 15 e 25.
         /// </summary>
-        public decimal CalcularValorParcela()
+        public decimal CalcularValorParcela(int parcelasMes)
         {
-            return Math.Round(ValorAporteMensal / PARCELAS_POR_MES, 2);
+            return Math.Round(ValorAporteMensal / parcelasMes, 2);
         }
 
         /// <summary>
