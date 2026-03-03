@@ -1,4 +1,5 @@
 ﻿using CompraProgramada.Domain.Exceptions;
+using System.Globalization;
 
 namespace CompraProgramada.Domain.Entities
 {
@@ -40,7 +41,7 @@ namespace CompraProgramada.Domain.Entities
             DataAtualizacao = DateTime.UtcNow;
         }
 
-        public decimal ObterComoDecimal() => decimal.Parse(Valor);
-        public int ObterComoInt() => int.Parse(Valor);
+        public decimal ObterComoDecimal() => decimal.Parse(Valor, CultureInfo.InvariantCulture);
+        public int ObterComoInt() => int.Parse(Valor, CultureInfo.InvariantCulture);
     }
 }

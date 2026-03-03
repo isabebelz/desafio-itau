@@ -64,7 +64,11 @@ namespace CompraProgramada.Infra.Data.Interfaces.Repositories
             {
                 var itens = await conn.QueryAsync<CestaRecomendacaoItem>(sqlItens,
                     new { CestaId = cesta.Id });
-                // Itens serão retornados separadamente no serviço via DTO
+
+                foreach (var item in itens)
+                {
+                    cesta.Itens.Add(item);
+                }
             }
 
             return cesta;
@@ -96,9 +100,30 @@ namespace CompraProgramada.Infra.Data.Interfaces.Repositories
                             DATA_VIGENCIA As DataVigencia,
                             DATA_CRIACAO As DataCriacao
                         FROM T_CESTA_RECOMENDACAO
-                        ORDER BY DATA_CRIACAO DESC;";
+                        ORDER BY DATA_CRIACAO DESC;
 
-            return await conn.QueryAsync<CestaRecomendacao>(sql);
+                        SELECT 
+                            ID As Id,
+                            CESTA_RECOMENDACAO_ID As CestaRecomendacaoId,
+                            ACAO_ID As AcaoId,
+                            PERCENTUAL As Percentual
+                        FROM T_CESTA_RECOMENDACAO_ITEM;";
+
+            using var multi = await conn.QueryMultipleAsync(sql);
+
+            var cestas = (await multi.ReadAsync<CestaRecomendacao>()).ToList();
+            var todosItens = (await multi.ReadAsync<CestaRecomendacaoItem>()).ToList();
+
+            foreach (var cesta in cestas)
+            {
+                var itensDaCesta = todosItens.Where(i => i.CestaRecomendacaoId == cesta.Id);
+                foreach (var item in itensDaCesta)
+                {
+                    cesta.Itens.Add(item);
+                }
+            }
+
+            return cestas;
         }
     }
 }
