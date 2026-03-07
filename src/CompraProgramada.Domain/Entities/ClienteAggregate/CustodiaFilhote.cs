@@ -35,7 +35,7 @@ namespace CompraProgramada.Domain.Entities.ClienteAggregate
         }
 
         /// <summary>
-        /// RN-042: Atualiza o preço médio ao receber novas ações (compra).
+        /// Atualiza o preço médio ao receber novas ações (compra).
         /// PM = (Qtd Anterior * PM Anterior + Qtd Nova * Preço Novo) / (Qtd Anterior + Qtd Nova)
         /// </summary>
         public void AdicionarQuantidade(int quantidade, decimal precoUnitario)
@@ -55,7 +55,7 @@ namespace CompraProgramada.Domain.Entities.ClienteAggregate
         }
 
         /// <summary>
-        /// RN-043: Em caso de venda, o preço médio NÃO se altera, apenas a quantidade diminui.
+        /// Em caso de venda, o preço médio NÃO se altera, apenas a quantidade diminui.
         /// </summary>
         public void RemoverQuantidade(int quantidade)
         {
@@ -70,7 +70,7 @@ namespace CompraProgramada.Domain.Entities.ClienteAggregate
         }
 
         /// <summary>
-        /// RN-064: Calcula o lucro/prejuízo da posição.
+        /// Calcula o lucro/prejuízo da posição.
         /// P/L = (Cotação Atual - Preço Médio) * Quantidade
         /// </summary>
         public decimal CalcularPL(decimal cotacaoAtual)
@@ -79,7 +79,7 @@ namespace CompraProgramada.Domain.Entities.ClienteAggregate
         }
 
         /// <summary>
-        /// RN-066: Calcula a rentabilidade percentual.
+        /// Calcula a rentabilidade percentual.
         /// Rentabilidade = ((Cotação Atual - Preço Médio) / Preço Médio) * 100
         /// </summary>
         public decimal CalcularRentabilidade(decimal cotacaoAtual)
@@ -89,7 +89,7 @@ namespace CompraProgramada.Domain.Entities.ClienteAggregate
         }
 
         /// <summary>
-        /// RN-063: Calcula o valor atual da posição.
+        /// Calcula o valor atual da posição.
         /// </summary>
         public decimal CalcularValorAtual(decimal cotacaoAtual)
         {
@@ -105,7 +105,7 @@ namespace CompraProgramada.Domain.Entities.ClienteAggregate
         }
 
         /// <summary>
-        /// RN-060: Calcula o lucro na venda de uma quantidade específica.
+        /// Calcula o lucro na venda de uma quantidade específica.
         /// Lucro = Quantidade * (Preço Venda - Preço Médio)
         /// </summary>
         public decimal CalcularLucroVenda(int quantidade, decimal precoVenda)

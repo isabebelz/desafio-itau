@@ -17,7 +17,7 @@ namespace CompraProgramada.Infra.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.0")
+                .HasAnnotation("ProductVersion", "8.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
@@ -337,6 +337,72 @@ namespace CompraProgramada.Infra.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("T_CUSTODIA_MASTER", (string)null);
+                });
+
+            modelBuilder.Entity("CompraProgramada.Domain.Entities.Cotacao", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("ID");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Codigo")
+                        .IsRequired()
+                        .HasMaxLength(12)
+                        .HasColumnType("varchar(12)")
+                        .HasColumnName("TICKER");
+
+                    b.Property<string>("CodigoBDI")
+                        .IsRequired()
+                        .HasMaxLength(2)
+                        .HasColumnType("varchar(2)")
+                        .HasColumnName("CODIGO_BDI");
+
+                    b.Property<DateTime?>("DataAtualizacao")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("DATA_ATUALIZACAO");
+
+                    b.Property<DateTime>("DataCriacao")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("DATA_CRIACAO");
+
+                    b.Property<DateTime>("DataPregao")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("DATA_PREGAO");
+
+                    b.Property<decimal>("PrecoAbertura")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("PRECO_ABERTURA");
+
+                    b.Property<decimal>("PrecoFechamento")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("PRECO_FECHAMENTO");
+
+                    b.Property<decimal>("PrecoMaximo")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("PRECO_MAXIMO");
+
+                    b.Property<decimal>("PrecoMinimo")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("PRECO_MINIMO");
+
+                    b.Property<int>("TipoMercado")
+                        .HasColumnType("int")
+                        .HasColumnName("TIPO_MERCADO");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Codigo", "DataPregao")
+                        .IsUnique()
+                        .HasDatabaseName("IX_COTACAO_TICKER_DATA");
+
+                    b.ToTable("T_COTACAO", (string)null);
                 });
 
             modelBuilder.Entity("CompraProgramada.Domain.Entities.OrdemCompraAggregate.Distribuicao", b =>

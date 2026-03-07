@@ -4,10 +4,10 @@ using CompraProgramada.Infra.Data.Context;
 using Dapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using MySql.Data.MySqlClient;
+using MySqlConnector;
 using System.Data;
 
-namespace CompraProgramada.Infra.Data.Interfaces.Repositories
+namespace CompraProgramada.Infra.Data.Repositories
 {
     public class ClienteRepository : IClienteRepository
     {
@@ -169,6 +169,29 @@ namespace CompraProgramada.Infra.Data.Interfaces.Repositories
                 WHERE CONTA_GRAFICA_ID = @ContaGraficaId;";
 
             return await conn.QueryAsync<CustodiaFilhote>(sql, new { ContaGraficaId = contaGraficaId });
+        }
+
+        public async Task<IEnumerable<Cliente>> ObterPorIdsAsync(IEnumerable<int> ids)
+        {
+            if (ids == null || !ids.Any())
+                return [];
+
+            using var conn = CreateConnection();
+
+            const string sql = @"
+                SELECT 
+                    ID As Id, 
+                    NOME As Nome, 
+                    CPF, 
+                    EMAIL As Email,
+                    VALOR_APORTE_MENSAL As ValorAporteMensal, 
+                    ATIVO As Ativo,
+                    DATA_ADESAO As DataAdesao, 
+                    DATA_SAIDA As DataSaida
+                FROM T_CLIENTE
+                WHERE ID IN @Ids;";
+
+            return await conn.QueryAsync<Cliente>(sql, new { Ids = ids.ToArray() });
         }
     }
 }

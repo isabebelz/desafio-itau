@@ -1,4 +1,5 @@
 ﻿using CompraProgramada.Domain.Enums;
+using CompraProgramada.Domain.Exceptions;
 
 namespace CompraProgramada.Domain.Entities.OrdemCompraAggregate
 {
@@ -22,10 +23,12 @@ namespace CompraProgramada.Domain.Entities.OrdemCompraAggregate
 
         private OrdemCompraItem() { }
 
-        public OrdemCompraItem(int ordemCompraId, int acaoId, int quantidade,
+        public OrdemCompraItem(int acaoId, int quantidade,
                                decimal precoUnitario, decimal valorTotal, TipoMercado tipoMercado)
         {
-            OrdemCompraId = ordemCompraId;
+            if (quantidade <= 0)
+                throw new DomainException("Quantidade deve ser maior que zero.");
+
             AcaoId = acaoId;
             Quantidade = quantidade;
             PrecoUnitario = precoUnitario;

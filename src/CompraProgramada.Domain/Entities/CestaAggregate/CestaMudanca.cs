@@ -2,7 +2,7 @@
 {
     /// <summary>
     /// Value Object que representa as diferenças entre duas cestas de recomendação.
-    /// Usado no processo de rebalanceamento (RN-045 a RN-049).
+    /// Usado no processo de rebalanceamento.
     /// </summary>
     public class CestaMudancas
     {

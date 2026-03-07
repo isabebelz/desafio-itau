@@ -7,14 +7,8 @@ namespace CompraProgramada.Api.Controllers
 {
     [ApiController]
     [Route("api/acoes")]
-    public class AcaoController : ControllerBase
+    public class AcaoController(IMediator _mediator) : ControllerBase
     {
-        private readonly IMediator _mediator;
-        public AcaoController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
-
         [HttpPost]
         public async Task<IActionResult> CadastrarAcao([FromBody] CadastrarAcaoCommand command)
         {

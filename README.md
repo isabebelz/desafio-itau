@@ -21,9 +21,8 @@ O projeto segue os princípios da **Arquitetura Limpa (Clean Architecture)** par
 
 ## Pré-requisitos
 
-Antes de começar, certifique-se de que você tem as seguintes ferramentas instaladas em sua máquina:
+Antes de começar, certifique-se de que você tem a seguinte ferramenta instalada em sua máquina:
 
-*   [.NET 9 SDK](https://dotnet.microsoft.com/download/dotnet/9.0) (ou a versão utilizada no projeto)
 *   [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 
 ## Como Executar o Projeto
@@ -39,7 +38,7 @@ cd desafio-itau-corretora
 
 ### 2. Inicie o Ambiente de Infraestrutura com Docker
 
-O `docker-compose` irá orquestrar e iniciar todos os serviços de backend necessários (MySQL e Kafka).
+O `docker-compose` irá orquestrar e iniciar todos os serviços de backend necessários.
 
 Na raiz do projeto, execute:
 
@@ -49,22 +48,13 @@ docker-compose up -d
 
 O comando com a flag `-d` (detached) irá executar os contêineres em segundo plano. Para verificar se os serviços subiram corretamente, utilize o comando `docker ps`. Você deve ver os contêineres `itau-mysql`, `itau-kafka` e `itau-zookeeper` com o status `Up`.
 
-### 3. Execute a API .NET
+A aplicação será iniciada e estará escutando nas portas definidas  (por exemplo, `http://localhost:5000`).
 
-Com a infraestrutura rodando, navegue até a pasta do projeto da API e inicie a aplicação:
+### 3. Acesse a Documentação da API (Swagger)
 
-```bash
-cd src/CompraProgramada.Api
-dotnet run
-```
+Com o docker em execução, abra seu navegador e acesse a interface do Swagger para explorar e interagir com os endpoints disponíveis:
 
-A aplicação será iniciada e estará escutando nas portas definidas no arquivo `launchSettings.json` (por exemplo, `http://localhost:5032` e `https://localhost:7032`).
-
-### 4. Acesse a Documentação da API (Swagger)
-
-Com a API em execução, abra seu navegador e acesse a interface do Swagger para explorar e interagir com os endpoints disponíveis:
-
-**[http://localhost:5032/swagger](http://localhost:5032/swagger)**
+**[http://localhost:5000/swagger](http://localhost:5000/swagger)**
 
 *(A porta pode variar. Verifique o output do comando `dotnet run` para a porta HTTP correta).*
 
@@ -77,3 +67,4 @@ A solução está organizada em projetos distintos, seguindo a Arquitetura Limpa
 *   **`CompraProgramada.Api`**: O ponto de entrada da aplicação. Expõe os endpoints REST e lida com as requisições e respostas HTTP.
 *   **`CompraProgramada.Infra.Data`**: Implementação concreta do acesso a dados (Entity Framework Core, Repositórios), configurações do banco de dados e serviços de mensageria (Kafka).
 *   **`CompraProgramada.Infra.Ioc`**: Projeto centralizador para a configuração da Injeção de Dependência (IoC), registrando todas as interfaces e suas implementações.
+*   **`CompraProgramada.Worker`**: Serviço responsável pelo processamento assíncrono das ordens de compra programada, que consome mensagens do Kafka e executa tarefas/background jobs desacoplados da API principal.

@@ -3,10 +3,10 @@ using CompraProgramada.Domain.Interfaces.Repositories;
 using CompraProgramada.Infra.Data.Context;
 using Dapper;
 using Microsoft.Extensions.Configuration;
-using MySql.Data.MySqlClient;
+using MySqlConnector;
 using System.Data;
 
-namespace CompraProgramada.Infra.Data.Interfaces.Repositories
+namespace CompraProgramada.Infra.Data.Repositories
 {
     public class CestaRecomendacaoRepository : ICestaRecomendacaoRepository
     {

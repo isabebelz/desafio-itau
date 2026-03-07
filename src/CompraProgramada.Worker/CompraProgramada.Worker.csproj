@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-CompraProgramada.Worker-05535dd7-8ac6-4e43-9b57-def21f668322</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.5" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CompraProgramada.Application\CompraProgramada.Application.csproj" />
+    <ProjectReference Include="..\CompraProgramada.Domain\CompraProgramada.Domain.csproj" />
+    <ProjectReference Include="..\CompraProgramada.Infra.Data\CompraProgramada.Infra.Data.csproj" />
+    <ProjectReference Include="..\CompraProgramada.Infra.IoC\CompraProgramada.Infra.IoC.csproj" />
+  </ItemGroup>
+</Project>

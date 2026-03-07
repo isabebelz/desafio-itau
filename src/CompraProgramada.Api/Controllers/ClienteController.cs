@@ -11,15 +11,8 @@ namespace CompraProgramada.Api.Controllers
 {
     [ApiController]
     [Route("api/clientes")]
-    public class ClienteController : ControllerBase
+    public class ClienteController(IMediator _mediator) : ControllerBase
     {
-        private readonly IMediator _mediator;
-
-        public ClienteController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
-
         [HttpPost]
         public async Task<IActionResult> Aderir([FromBody] AderirClienteDTO dto)
         {

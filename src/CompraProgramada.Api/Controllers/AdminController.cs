@@ -9,15 +9,8 @@ namespace CompraProgramada.Api.Controllers
 {
     [ApiController]
     [Route("api/admin")]
-    public class AdminController : ControllerBase
+    public class AdminController(IMediator _mediator) : ControllerBase
     {
-        private readonly IMediator _mediator;
-
-        public AdminController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
-
         [HttpPost("cestas")]
         public async Task<IActionResult> CadastrarCesta([FromBody] CadastrarCestaDTO dto)
         {

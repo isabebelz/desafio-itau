@@ -4,10 +4,10 @@ using CompraProgramada.Infra.Data.Context;
 using Dapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using MySql.Data.MySqlClient;
+using MySqlConnector;
 using System.Data;
 
-namespace CompraProgramada.Infra.Data.Interfaces.Repositories
+namespace CompraProgramada.Infra.Data.Repositories
 {
     public class AcaoRepository : IAcaoRepository
     {
@@ -91,6 +91,22 @@ namespace CompraProgramada.Infra.Data.Interfaces.Repositories
             }
 
             return await conn.QueryAsync<Acao>(sql, param);
+        }
+
+        public async Task<IEnumerable<Acao>> ObterPorIdsAsync(IEnumerable<int> ids)
+        {
+            using var conn = CreateConnection();
+
+            var sql = @"
+                SELECT 
+                    ID As Id,
+                    CODIGO As Codigo,
+                    NOME_EMPRESA As NomeEmpresa,
+                    PRECO As Preco,
+                    ATIVO As Ativo
+                FROM T_ACAO WHERE ID IN @Ids";
+
+            return await conn.QueryAsync<Acao>(sql, new { Ids = ids.ToArray() });
         }
     }
 }
