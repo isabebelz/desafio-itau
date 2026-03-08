@@ -25,22 +25,13 @@ namespace CompraProgramada.Infra.Data
                 var connectionString = configuration.GetConnectionString("DefaultConnection");
 
                 services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseMySql(
-                        connectionString,
-                        ServerVersion.Parse("8.0.36-mysql"),
-                        mySqlOptions => mySqlOptions.EnableRetryOnFailure(
-                            maxRetryCount: 10,                            
-                            maxRetryDelay: TimeSpan.FromSeconds(5),       
-                            errorNumbersToAdd: null                       
-                        )
-                    )
-                );
 
                 AddKafkaProducer(services, configuration);
 
                 services.AddScoped<ICotahistParser, CotahistParser>();
 
                 services.AddRepositories();
+                services.AddServices();
 
             }
             catch(Exception ex)
@@ -65,27 +56,12 @@ namespace CompraProgramada.Infra.Data
             return services;
         }
 
-        private static void AddKafkaProducer(IServiceCollection services, IConfiguration configuration)
         {
-            var kafkaSection = configuration.GetSection("Kafka");
-            var bootstrapServers = kafkaSection.GetValue<string>("BootstrapServers");
-
-            var topicDistribuicao = kafkaSection.GetValue<string>("TopicDistribuicaoIrDedoDuro");
-            if (string.IsNullOrWhiteSpace(topicDistribuicao))
-                throw new InvalidOperationException("O tópico Kafka 'TopicDistribuicaoIrDedoDuro' não foi configurado. Verifique seu appsettings.json.");
-
-            var producerConfig = new ProducerConfig
-            {
                 BootstrapServers = bootstrapServers
             };
 
             services.AddSingleton<IProducer<Null, string>>(new ProducerBuilder<Null, string>(producerConfig).Build());
 
-            services.AddSingleton<IKafkaProducer>(provider =>
-                new KafkaProducer(
-                    provider.GetRequiredService<IProducer<Null, string>>(),
-                    topicDistribuicao
-                ));
         }
     }
 }

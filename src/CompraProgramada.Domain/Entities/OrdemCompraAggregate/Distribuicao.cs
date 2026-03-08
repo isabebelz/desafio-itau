@@ -32,7 +32,6 @@ namespace CompraProgramada.Domain.Entities.OrdemCompraAggregate
         /// IR = Valor da operação * 0,005%
         /// </summary>
         public Distribuicao(int ordemCompraId, int contaGraficaId, int acaoId,
-                           int quantidade, decimal precoUnitario, decimal aliquotaIrDedoDuro)
         {
             if (quantidade <= 0)
                 throw new DomainException("Quantidade deve ser maior que zero.");
@@ -45,7 +44,6 @@ namespace CompraProgramada.Domain.Entities.OrdemCompraAggregate
             AcaoId = acaoId;
             Quantidade = quantidade;
             PrecoUnitario = precoUnitario;
-            ValorIRDedoDuro = CalcularIRDedoDuro(quantidade, precoUnitario, aliquotaIrDedoDuro);
             DataDistribuicao = DateTime.UtcNow;
         }
 

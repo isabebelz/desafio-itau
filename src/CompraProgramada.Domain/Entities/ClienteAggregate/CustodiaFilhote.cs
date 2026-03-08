@@ -55,7 +55,6 @@ namespace CompraProgramada.Domain.Entities.ClienteAggregate
         }
 
         /// <summary>
-        /// Em caso de venda, o preço médio NÃO se altera, apenas a quantidade diminui.
         /// </summary>
         public void RemoverQuantidade(int quantidade)
         {
@@ -105,7 +104,6 @@ namespace CompraProgramada.Domain.Entities.ClienteAggregate
         }
 
         /// <summary>
-        /// Calcula o lucro na venda de uma quantidade específica.
         /// Lucro = Quantidade * (Preço Venda - Preço Médio)
         /// </summary>
         public decimal CalcularLucroVenda(int quantidade, decimal precoVenda)

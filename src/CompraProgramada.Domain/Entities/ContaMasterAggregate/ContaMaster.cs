@@ -1,6 +1,4 @@
-﻿using CompraProgramada.Domain.Exceptions;
-
-namespace CompraProgramada.Domain.Entities.ContaMasterAggregate
+﻿namespace CompraProgramada.Domain.Entities.ContaMasterAggregate
 {
     /// <summary>
     /// Conta da corretora que consolida as compras antes da distribuição.

@@ -15,7 +15,7 @@ namespace CompraProgramada.Application.Common
             try
             {
                 var thisAssembly = typeof(DependencyInjection).Assembly;
-                
+
                 Log.Information("Registering Services...");
                 services.AddServices();
 
