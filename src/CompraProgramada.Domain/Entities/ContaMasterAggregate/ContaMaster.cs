@@ -19,8 +19,21 @@
 
         public ContaMaster(string descricao)
         {
+            if (string.IsNullOrWhiteSpace(descricao))
+                throw new DomainException("Descrição é obrigatória.");
+
             Descricao = descricao;
             Custodias = [];
+        }
+
+        /// <summary>
+        /// Obtém o saldo de um ativo na custódia master.
+        /// Usado para descontar do total a comprar.
+        /// </summary>
+        public int ObterSaldoAtivo(int acaoId)
+        {
+            var custodia = Custodias.FirstOrDefault(c => c.AcaoId == acaoId);
+            return custodia?.Quantidade ?? 0;
         }
     }
 }

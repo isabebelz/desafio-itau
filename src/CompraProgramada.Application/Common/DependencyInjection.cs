@@ -1,8 +1,10 @@
 ﻿using CompraProgramada.Application.Common.Behaviours;
+using CompraProgramada.Domain.Interfaces.Services;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
+using CompraProgramada.Application.Services;
 
 namespace CompraProgramada.Application.Common
 {
@@ -13,6 +15,9 @@ namespace CompraProgramada.Application.Common
             try
             {
                 var thisAssembly = typeof(DependencyInjection).Assembly;
+
+                Log.Information("Registering Services...");
+                services.AddServices();
 
                 Log.Information("Registering AutoMapper...");
                 services.AddAutoMapper(thisAssembly);
@@ -32,6 +37,13 @@ namespace CompraProgramada.Application.Common
                 Log.Fatal(ex, "Fatal error initializing the Application project.");
                 throw;
             }
+
+            return services;
+        }
+
+        private static IServiceCollection AddServices(this IServiceCollection services)
+        {
+            services.AddScoped<IMotorCompraService, MotorCompraService>();
 
             return services;
         }

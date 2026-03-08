@@ -14,6 +14,7 @@ namespace CompraProgramada.Domain.Interfaces.Repositories
         Task<Cliente?> ObterPorCpfAsync(string cpf);
         Task<IEnumerable<Cliente>> ObterTodosAtivosAsync();
         Task<IEnumerable<Cliente>> ObterTodosAsync(bool? ativo);
+        Task<IEnumerable<Cliente>> ObterPorIdsAsync(IEnumerable<int> ids);
 
         Task AdicionarContaGraficaAsync(ContaGrafica contaGrafica);
         Task<ContaGrafica?> ObterContaGraficaPorClienteIdAsync(int clienteId);

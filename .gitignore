@@ -426,3 +426,8 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# B3 Market Data (COTAHIST)
+# Ignora arquivos de dados volumosos para evitar erro de limite de 100MB do GitHub
+cotacoes/*.TXT
+cotacoes/*.txt

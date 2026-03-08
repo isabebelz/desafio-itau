@@ -7,10 +7,7 @@ namespace CompraProgramada.Api.Controllers
 {
     [ApiController]
     [Route("api/acoes")]
-    public class AcaoController : ControllerBase
-    {
-        private readonly IMediator _mediator;
-        public AcaoController(IMediator mediator)
+    public class AcaoController(IMediator _mediator) : ControllerBase
         {
             _mediator = mediator;
         }

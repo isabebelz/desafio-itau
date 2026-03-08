@@ -1,8 +1,12 @@
-﻿using CompraProgramada.Domain.Interfaces;
+﻿using CompraProgramada.Application.Events;
+using CompraProgramada.Domain.Interfaces;
 using CompraProgramada.Domain.Interfaces.Repositories;
+using CompraProgramada.Domain.Interfaces.Services;
 using CompraProgramada.Infra.Data.Context;
-using CompraProgramada.Infra.Data.Interfaces.Repositories;
+using CompraProgramada.Infra.Data.Messaging;
+using CompraProgramada.Infra.Data.Parses;
 using CompraProgramada.Infra.Data.Repositories;
+using Confluent.Kafka;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,7 +25,10 @@ namespace CompraProgramada.Infra.Data
                 var connectionString = configuration.GetConnectionString("DefaultConnection");
 
                 services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+
+                AddKafkaProducer(services, configuration);
+
+                services.AddScoped<ICotahistParser, CotahistParser>();
 
                 services.AddRepositories();
                 services.AddServices();
@@ -44,14 +51,17 @@ namespace CompraProgramada.Infra.Data
             services.AddScoped<IOrdemCompraRepository, OrdemCompraRepository>();
             services.AddScoped<IContaMasterRepository, ContaMasterRepository>();
             services.AddScoped<IParametroSistemaRepository, ParametroSistemaRepository>();
+           services.AddScoped<ICotacaoRepository, CotacaoRepository>();
 
             return services;
         }
 
-        private static IServiceCollection AddServices(this IServiceCollection services)
         {
+                BootstrapServers = bootstrapServers
+            };
 
-            return services;
+            services.AddSingleton<IProducer<Null, string>>(new ProducerBuilder<Null, string>(producerConfig).Build());
+
         }
     }
 }

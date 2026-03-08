@@ -14,5 +14,6 @@ namespace CompraProgramada.Domain.Interfaces.Repositories
         Task<Acao?> ObterPorCodigoAsync(string codigo);
         Task<IEnumerable<Acao>> ObterTodasAsync(bool? ativo);
         Task<IEnumerable<Acao>> ObterTodosAtivosAsync();
+        Task<IEnumerable<Acao>> ObterPorIdsAsync(IEnumerable<int> ids);
     }
 }
